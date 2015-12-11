@@ -3,6 +3,9 @@ __author__ = 'stehb'
 
 class Christmas1:
 
+    ROWS = 25
+    COLS = 25
+
     GIVEN_POINTS = [(3,  3),
                     (4,  3),
                     (12, 3),
@@ -28,7 +31,7 @@ class Christmas1:
                     (21, 21),
                     ]
 
-    ROW_DATA = [
+    HORIZ_DATA = [
         [7, 3, 1, 1, 7],
         [1, 1, 2, 2, 1, 1],
         [1, 3, 1, 3, 1, 1, 3, 1],
@@ -57,7 +60,7 @@ class Christmas1:
     ]
 
 
-    HORIZ_DATA = [
+    VERT_DATA = [
         [7, 2, 1, 1, 7],
         [1, 1, 2, 2, 1, 1],
         [1, 3, 1, 3, 1, 3, 1, 3, 1],
@@ -87,26 +90,44 @@ class Christmas1:
 
 
     def __init__(self):
-        self.grid = [[0 for i in range(25)] for j in range(25)]
-        self.givenPoints
+        self.grid = [[0 for i in range(self.ROWS)] for j in range(self.COLS)]
 
         for point in self.GIVEN_POINTS:
-            self.grid[point[1]][point[0]] = 1
+            self.setBit( point )
 
+
+    def setBit(self, (x, y)):
+        self.grid[y][x] = 1
 
 
     def printGrid(self):
-        y = 0
-        str = ""
         for row in self.grid:
-            str = ''.join(' {:d}'.format(i) for i in row)
-            print(str)
+            print(''.join(' {:d}'.format(i) for i in row))
+
+
+    def getVectorV(self, atColumn):
+        ret = []
+        for row in self.grid:
+            ret.append( row[atColumn] )
+        return ret
+
+
+    def getVectorH(self, atRow):
+        return self.grid[atRow]
+
+
+    def getAllVectors(self):
+        ret = []
+        for i in range(0, self.ROWS):
+            ret.append( {"type": "row", "num": i, "dat": self.getVectorH(i), "inf": self.HORIZ_DATA[i]} )
+        for i in range(0, self.COLS):
+            ret.append( {"type": "col", "num": i, "dat": self.getVectorV(i), "inf": self.VERT_DATA[i]} )
+        return ret
 
 
     def solve(self):
-        self.printGrid()
+        vectors = self.getAllVectors()
         print "YO"
-
 
 
 
